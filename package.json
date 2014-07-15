@@ -1,0 +1,33 @@
+{
+  "name": "grunt-json-safemerge",
+  "description": "Merges JSON files with warnings and errors when duplicate or overwriting values are applied to keys.",
+  "version": "0.2.0-alpha.2",
+  "author": "Drew Wilson (https://github.com/sproutsocial/grunt-json-safemerge)",
+  "homepage": "https://github.com/sproutsocial/grunt-json-safemerge",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/sproutsocial/grunt-json-safemerge.git"
+  },
+  "bugs": {
+    "url": "https://github.com/sproutsocial/grunt-json-safemerge/issues"
+  },
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "https://github.com/sproutsocial/grunt-json-safemerge/LICENSE"
+    }
+  ],
+  "main": "tasks/safemerge",
+  "scripts": {
+    "test": "grunt test"
+  },
+  "keywords": [
+    "gruntplugin",
+    "json",
+    "merge"
+  ],
+  "dependencies": {
+    "grunt": "0.4.x",
+    "lodash-node": "^2.4.1"
+  }
+}
