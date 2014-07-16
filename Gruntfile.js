@@ -5,7 +5,7 @@ module.exports = function (grunt) {
 	var config = {
 		'safemerge' : {
 			'test': {
-				'files': './tests/test*.json'
+				files: { src: ['./tests/test1.json', './tests/test2.json'] }
 			}
 		}
 	};

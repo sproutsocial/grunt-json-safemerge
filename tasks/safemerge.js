@@ -4,9 +4,6 @@ var _ = require('lodash-node');
 
 module.exports = function (grunt) {
 	grunt.registerMultiTask('safemerge', function() {		
-		var files = this.data.files; 
-		files = grunt.file.expand(files);
-
 		var concattedJson = {};
 		var failed = 0;
 
@@ -33,19 +30,24 @@ module.exports = function (grunt) {
 
 			return objValue;
 		}
+		if (this.files) {
+			this.files.forEach(function(file) {
+				file.src.forEach(function(src) {
+					var json = grunt.file.readJSON(src);
+					grunt.log.debug('orig',json);
 
-		_.each(files, function (file) {
-			var json = grunt.file.readJSON(file);
-			grunt.log.debug('orig',json);
+					var theFile = src.match(/\/([^/]*)$/)[1];
 
-			var theFile = file.match(/\/([^/]*)$/)[1];
+					assignWithKey(concattedJson, json, recurseAssign, theFile + " root");
+				});
+			});
+		} else {
+			grunt.log.warn("No files were processed.");
+		}
 
-			assignWithKey(concattedJson, json, recurseAssign, theFile + " root");
-		});
-
-		// grunt.log.write(JSON.stringify(concattedJson));
+		grunt.verbose.write(JSON.stringify(concattedJson));
 		if(failed) {
-			grunt.fail.warn("Previously set values were destroyed");
+			grunt.fail.warn("Previously set values were destroyed.");
 		}
 		return concattedJson;
 	});
