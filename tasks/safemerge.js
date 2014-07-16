@@ -3,7 +3,7 @@
 var _ = require('lodash-node');
 
 module.exports = function (grunt) {
-	grunt.registerMultiTask('safemerge', function() {		
+	grunt.registerMultiTask('safemerge', function(flag) {		
 		var concattedJson = {};
 		var failed = 0;
 
@@ -46,7 +46,7 @@ module.exports = function (grunt) {
 		}
 
 		grunt.verbose.write(JSON.stringify(concattedJson));
-		if(failed) {
+		if((!flag || flag === 'fail') && failed) {
 			grunt.fail.warn("Previously set values were destroyed.");
 		}
 		return concattedJson;
