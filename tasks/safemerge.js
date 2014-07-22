@@ -6,6 +6,7 @@ module.exports = function (grunt) {
 	grunt.registerMultiTask('safemerge', function(flag) {		
 		var concattedJson = {};
 		var failed = 0;
+		var done = this.async();
 
 		// _.assign/_.merge/_.extend cannot be used since they do not track the key
 		// and it would be hard to know of an error when you don't know what the key is
@@ -30,25 +31,24 @@ module.exports = function (grunt) {
 
 			return objValue;
 		}
-		if (this.files) {
-			this.files.forEach(function(file) {
-				file.src.forEach(function(src) {
-					var json = grunt.file.readJSON(src);
-					grunt.log.debug('orig',json);
+		grunt.verbose.writeln(JSON.stringify(this.file));
+		if (this.filesSrc) {
+			this.filesSrc.forEach(function(src) {
+				var json = grunt.file.readJSON(src);
+				grunt.log.debug('orig',json);
 
-					var theFile = src.match(/\/([^/]*)$/)[1];
+				var theFile = src.match(/\/([^/]*)$/)[1];
 
-					assignWithKey(concattedJson, json, recurseAssign, theFile + " root");
-				});
+				assignWithKey(concattedJson, json, recurseAssign, theFile + " root");
 			});
 		} else {
 			grunt.log.warn("No files were processed.");
 		}
 
-		grunt.verbose.write(JSON.stringify(concattedJson));
+		grunt.verbose.writeln(JSON.stringify(concattedJson));
 		if((!flag || flag === 'fail') && failed) {
 			grunt.fail.warn("Previously set values were destroyed.");
 		}
-		return concattedJson;
+		done(concattedJson);
 	});
 };
